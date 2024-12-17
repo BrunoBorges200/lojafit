@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja de Roupas Femininas</title>
+    <script>
+        let cart = [];
+
+        function addToCart(product, price) {
+            const item = { product, price };
+            cart.push(item);
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.getElementById('cart-list');
+            const cartTotal = document.getElementById('cart-total');
+
+            cartList.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.product} - R$ ${item.price.toFixed(2)}`;
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remover';
+                removeButton.onclick = () => removeFromCart(index);
+
+                listItem.appendChild(removeButton);
+                cartList.appendChild(listItem);
+
+                total += item.price;
+            });
+
+            cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Loja de Roupas Femininas</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Produtos</h2>
+            <ul>
+                <li>
+                    Vestido Floral - R$ 99,90
+                    <button onclick="addToCart('Vestido Floral', 99.90)">Adicionar ao Carrinho</button>
+                </li>
+                <li>
+                    Blusa de Algodão - R$ 49,90
+                    <button onclick="addToCart('Blusa de Algodão', 49.90)">Adicionar ao Carrinho</button>
+                </li>
+                <li>
+                    Calça Jeans - R$ 119,90
+                    <button onclick="addToCart('Calça Jeans', 119.90)">Adicionar ao Carrinho</button>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Carrinho de Compras</h2>
+            <ul id="cart-list">
+                <!-- Produtos do carrinho serão adicionados aqui -->
+            </ul>
+            <p id="cart-total">Total: R$ 0,00</p>
+        </section>
+    </main>
+</body>
+</html>
