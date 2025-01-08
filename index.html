@@ -1,79 +1,116 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja de Roupas Femininas</title>
-    <script>
-        let cart = [];
-
-        function addToCart(product, price) {
-            const item = { product, price };
-            cart.push(item);
-            updateCart();
-        }
-
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartList = document.getElementById('cart-list');
-            const cartTotal = document.getElementById('cart-total');
-
-            cartList.innerHTML = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${item.product} - R$ ${item.price.toFixed(2)}`;
-
-                const removeButton = document.createElement('button');
-                removeButton.textContent = 'Remover';
-                removeButton.onclick = () => removeFromCart(index);
-
-                listItem.appendChild(removeButton);
-                cartList.appendChild(listItem);
-
-                total += item.price;
-            });
-
-            cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
-        }
-    </script>
+    <title>Product Listing | Shop Products</title>
+    <meta name="description" content="Browse our collection of products. Filter and find exactly what you're looking for.">
+    <link rel="icon" type="image/png" href="https://api.dicebear.com/7.x/shapes/png?seed=product-listing&backgroundColor=1971c2" />
+    <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <header>
-        <h1>Loja de Roupas Femininas</h1>
-    </header>
+    <div id="app" class="min-h-screen bg-gray-50">
+        <!-- Navbar -->
+        <nav class="bg-[#a5d8ff] border-b border-[#1971c2] p-4">
+            <div class="container mx-auto">
+                <h1 class="text-[#1971c2] text-xl font-bold text-center">Shop Products</h1>
+            </div>
+        </nav>
 
-    <main>
-        <section>
-            <h2>Produtos</h2>
-            <ul>
-                <li>
-                    Vestido Floral - R$ 99,90
-                    <button onclick="addToCart('Vestido Floral', 99.90)">Adicionar ao Carrinho</button>
-                </li>
-                <li>
-                    Blusa de Algodão - R$ 49,90
-                    <button onclick="addToCart('Blusa de Algodão', 49.90)">Adicionar ao Carrinho</button>
-                </li>
-                <li>
-                    Calça Jeans - R$ 119,90
-                    <button onclick="addToCart('Calça Jeans', 119.90)">Adicionar ao Carrinho</button>
-                </li>
-            </ul>
-        </section>
+        <main class="container mx-auto px-4 py-8">
+            <!-- Filter -->
+            <div class="mb-8">
+                <button 
+                    @click="showFilters = !showFilters"
+                    class="bg-[#ffc9c9] px-6 py-2 rounded-lg hover:bg-[#ff8787] transition-colors"
+                >
+                    Filter
+                </button>
+                
+                <div v-if="showFilters" class="mt-4 p-4 bg-white rounded-lg shadow">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block mb-2">Price Range</label>
+                            <input type="range" v-model="filters.price" class="w-full" min="0" max="1000">
+                        </div>
+                        <div>
+                            <label class="block mb-2">Category</label>
+                            <select v-model="filters.category" class="w-full p-2 border rounded">
+                                <option value="">All</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="books">Books</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <section>
-            <h2>Carrinho de Compras</h2>
-            <ul id="cart-list">
-                <!-- Produtos do carrinho serão adicionados aqui -->
-            </ul>
-            <p id="cart-total">Total: R$ 0,00</p>
-        </section>
-    </main>
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div v-for="product in products" :key="product.id" 
+                    class="bg-[#b2f2bb] p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+                    <img :src="product.image" :alt="product.name" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="text-lg font-semibold mb-2">{{ product.name }}</h3>
+                    <p class="text-gray-600 mb-4">{{ product.description }}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold">${{ product.price }}</span>
+                        <button 
+                            @click="addToCart(product)"
+                            class="bg-[#1971c2] text-white px-4 py-2 rounded hover:bg-[#1864ab] transition-colors"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-[#ffec99] py-8 mt-12">
+            <div class="container mx-auto px-4 text-center">
+                <p class="text-gray-600">&copy; 2024 Shop Products. All rights reserved.</p>
+                <div class="mt-4 space-x-4">
+                    <a href="#" class="text-gray-600 hover:text-gray-900">About</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Contact</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Terms</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-900">Privacy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    showFilters: false,
+                    filters: {
+                        price: 500,
+                        category: ''
+                    },
+                    products: [
+                        { id: 1, name: 'Product 01', price: 99.99, description: 'High-quality product with amazing features', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product1' },
+                        { id: 2, name: 'Product 02', price: 149.99, description: 'Premium product for discerning customers', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product2' },
+                        { id: 3, name: 'Product 03', price: 79.99, description: 'Affordable solution for everyday needs', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product3' },
+                        { id: 4, name: 'Product 04', price: 199.99, description: 'Professional grade product', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product4' },
+                        { id: 5, name: 'Product 05', price: 129.99, description: 'Versatile and reliable choice', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product5' },
+                        { id: 6, name: 'Product 06', price: 89.99, description: 'Great value for money', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product6' },
+                        { id: 7, name: 'Product 07', price: 159.99, description: 'Advanced features and modern design', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product7' },
+                        { id: 8, name: 'Product 08', price: 119.99, description: 'Elegant solution for sophisticated users', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product8' },
+                        { id: 9, name: 'Product 09', price: 139.99, description: 'Innovation meets functionality', image: 'https://api.dicebear.com/7.x/shapes/svg?seed=product9' }
+                    ]
+                }
+            },
+            methods: {
+                addToCart(product) {
+                    alert(`Added ${product.name} to cart!`)
+                }
+            }
+        }).mount('#app')
+    </script>
 </body>
 </html>
