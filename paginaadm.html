@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja Fitness - Administração</title>
+  <link rel="stylesheet" href="./css/pga.css">
+  <style>
+    /* Adicione estilos aqui, se necessário */
+  </style>
+</head>
+<body>
+
+  <h1>Página de Administração</h1>
+
+  <h2>Adicionar Anúncio</h2>
+  <form id="addAdForm" onsubmit="addAd(event)">
+    <input type="text" id="adTitle" name="adTitle" placeholder="Título do Anúncio">
+    <textarea id="adDescription" name="adDescription" placeholder="Descrição do Anúncio"></textarea>
+    <input type="file" id="adImage" name="adImage" accept="image/*" onchange="previewImage(event)">
+    <img id="imagePreview" src="#" alt="Imagem do Produto" style="display: none; max-width: 200px;">
+    <select id="adClass" name="adClass">
+      <option value="">Selecione a Classe</option>
+      <option value="Roupas">Roupas</option>
+      <option value="Calçados">Calçados</option>
+      <option value="Acessórios">Acessórios</option>
+    </select>
+    <button type="submit">Adicionar Anúncio</button>
+  </form>
+
+  <h2>Anúncios Atuais</h2>
+  <ul id="adList">
+    <!-- Os anúncios serão exibidos aqui -->
+  </ul>
+
+  <h2>Pedidos dos Clientes</h2>
+  <ul id="orderList">
+    <!-- As informações dos pedidos serão exibidas aqui -->
+  </ul>
+
+  <script>
+    let ads = []; // Array para armazenar os anúncios
+    let orders = []; // Array para armazenar os pedidos dos clientes
+
+    function addAd(event) {
+      event.preventDefault(); // Impede o envio padrão do formulário
+
+      const adTitle = document.getElementById('adTitle').value;
+      const adDescription = document.getElementById('adDescription').value;
+      const adImage = document.getElementById('adImage').files[0]; // Obter arquivo de imagem
+      const adClass = document.getElementById('adClass').value; // Obter a classe do produto
+
+      if (adTitle && adDescription && adImage && adClass) {
+        // Criar um objeto URL de dados para a imagem selecionada
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          ads.push({ title: adTitle, description: adDescription, image: e.target.result, class: adClass });
+          displayAds();
+        }
+        reader.readAsDataURL(adImage); // Ler a imagem como URL de dados
+        document.getElementById('addAdForm').reset(); // Limpa o formulário após adicionar o anúncio
+      } else {
+        alert('Por favor, preencha todos os campos.');
+      }
+    }
+
+    function removeAd(index) {
+      ads.splice(index, 1);
+      displayAds();
+    }
+
+    function displayAds() {
+      const adList = document.getElementById('adList');
+      adList.innerHTML = ''; // Limpa os anúncios atuais
+
+      if (ads.length === 0) {
+        adList.innerHTML = '<li>Nenhum anúncio disponível.</li>';
+      } else {
+        ads.forEach((ad, index) => {
+          const li = document.createElement('li');
+          li.innerHTML = `<strong>${ad.title}</strong>: ${ad.description} <img src="${ad.image}" alt="Imagem do Produto"> Classe: ${ad.class} <button onclick="removeAd(${index})">Remover</button>`;
+          adList.appendChild(li);
+        });
+      }
+    }
+
+    // Exibindo os anúncios ao carregar a página
+    window.onload = displayAds;
+
+    function previewImage(event) {
+      const imagePreview = document.getElementById('imagePreview');
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function displayOrders() {
+      const orderList = document.getElementById('orderList');
+      orderList.innerHTML = ''; // Limpa as encomendas atuais
+
+      if (orders.length === 0) {
+        orderList.innerHTML = '<li>Nenhum pedido feito.</li>';
+      } else {
+        orders.forEach((order, index) => {
+          const li = document.createElement('li');
+          li.innerHTML = `Nome: ${order.name}, Email: ${order.email}, Telefone: ${order.phone}, Endereço: ${order.address}, CEP: ${order.zip}`;
+          orderList.appendChild(li);
+        });
+      }
+    }
+
+    // Função para buscar os dados das roupas de outra página
+    function fetchRoupas() {
+  fetch('pagina1.html') // Corrigido para 'pagina1.html' conforme fornecido
+    .then(response => response.text())
+    .then(data => {
+      const parser = new DOMParser();
+      const htmlDocument = parser.parseFromString(data, 'text/html');
+
+      // Seleciona os elementos que contêm as informações das roupas
+      const roupas = htmlDocument.querySelectorAll('.product');
+
+      // Itera sobre os elementos e extrai as informações relevantes
+      roupas.forEach(roupa => {
+        const title = roupa.querySelector('h3').textContent;
+        const description = roupa.querySelector('p').textContent;
+        const imageSrc = roupa.querySelector('img').getAttribute('src');
+
+        // Verifica se o produto não é uma roupa (se não estiver na aba 'roupas')
+        const isInRoupasTab = roupa.closest('#roupas');
+        if (isInRoupasTab) {
+          // Cria um item de lista e adiciona as informações da roupa
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<strong>${title}</strong>: ${description} <img src="${imageSrc}" alt="${title}"> Classe: Roupas`;
+          
+          // Adiciona um botão de remover
+          const removeButton = document.createElement('button');
+          removeButton.textContent = 'Remover';
+          removeButton.onclick = function() {
+            listItem.remove();
+          };
+          listItem.appendChild(removeButton);
+
+          // Adiciona o item à lista de anúncios atuais
+          document.getElementById('adList').appendChild(listItem);
+        }
+      });
+    })
+    .catch(error => console.error('Erro ao buscar as roupas:', error));
+}
+
+    
+
+    // Chama a função para buscar as roupas ao carregar a página
+    window.onload = fetchRoupas;
+
+  </script>
+
+</body>
+</html>

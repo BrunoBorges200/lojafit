@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja Fitness</title>
+  <link rel="stylesheet" href="./css/pg1.css">
+ <style>
+
+    
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1 class="logo">LOJA FITNESS</h1>
+      <input type="text" id="search" placeholder="Buscar...">
+      <button class="cart-btn" onclick="openCartModal()">Ver Carrinho</button>
+      <div class="cart">
+        <img src="./imagens/carrinhodecompras.png" alt="Carrinho de Compras">
+        <span class="cart-count">0</span>
+      </div>
+      
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="tabs">
+        <button class="tablink active" onclick="openTab('roupas')">Roupas</button>
+        <button class="tablink" onclick="openTab('calcados')">Calçados</button>
+        <button class="tablink" onclick="openTab('acessorios')">Acessórios</button>
+    </div>
+      
+    <div style="clear: both;"></div> 
+
+        <div id="roupas" class="tabcontent">
+            <div class="products-container">
+              <div class="product">
+                <img src="./imagens/vestido1.jpg" alt="vestido1">
+                <h3>Vestido Feminino</h3>
+                <p>R$ 280,00</p>
+                <button onclick="addToCart('Vestido Feminino', 280.00)">Adicionar ao Carrinho</button>
+              </div>
+    
+
+
+
+
+              
+              <div class="product">
+                <img src="./imagens/maio1.jpg" alt="maio1">
+                <h3>Maiô Hidroginástica</h3>
+                <p>R$ 129,99</p>
+                <button onclick="addToCart('Maiô Hidroginástica', 129.99)">Adicionar ao Carrinho</button>
+              </div>
+              <div class="product">
+                <img src="./imagens/conjuntok.jpg" alt="conjuntok">
+                <h3>conjunto k</h3>
+                <p>R$ 79,99</p>
+                <button onclick="addToCart('conjunto k ', 79.99)">Adicionar ao Carrinho</button>
+              </div>
+
+
+              <div class="product">
+                <img src="./imagens/Conjuntopraia.jpg" alt="conjunto">
+                <h3>Conjunto saída de praia tule</h3>
+                <p>R$ 135,00</p>
+                <button onclick="addToCart('Conjunto saída de praia tule', 135.00)">Adicionar ao Carrinho</button>
+              </div>
+
+
+
+              <div class="product">
+                <img src="./imagens/topalexia.jpg" alt="top">
+                <h3> Top Alexia (somente o top) </h3>
+                <p>R$79,90</p>
+                <button onclick="addToCart('Top Alexia', 79.90)">Adicionar ao Carrinho</button>
+              </div>
+
+              <div class="product">
+                <img src="./imagens/conjuntosaia.jpg" alt="conjuntosaia">
+                <h3> Conjunto saia e regata cristal </h3>
+                <p>R$275,90</p>
+                <button onclick="addToCart('Conjunto saia e regata cristal ', 275.00)">Adicionar ao Carrinho</button>
+              </div>
+
+              <div class="product">
+                <img src="./imagens/topalexia.jpg" alt="top">
+                <h3> Shorts Alexia (somente o shorts) </h3>
+                <p>R$79,90</p>
+                <button onclick="addToCart('Top Alexia', 79.90)">Adicionar ao Carrinho</button>
+              </div>
+
+
+
+              <div class="product">
+                <img src="./imagens/biquinicanelado.jpg" alt="Biquíni">
+                <h3> Conjunto Biquíni canelado </h3>
+                <p>R$59,90</p>
+                <button onclick="addToCart('Biquíni canelado', 59.90)">Adicionar ao Carrinho</button>
+              </div>
+
+
+              <div class="product">
+                <img src="./imagens/Vestidocetim.jpg" alt="vestidocetim">
+                <h3> Vestido de cetim Plus </h3>
+                <p>R$150,00</p>
+                <button onclick="addToCart('Vestido de cetim Plus', 150.00)">Adicionar ao Carrinho</button>
+              </div>
+
+
+
+              <div class="product">
+                <img src="./imagens/Croppedcamisa.jpg" alt="Croppedcamisa">
+                <h3> Cropped camisa (somente camisa )</h3>
+                <p>R$50,00</p>
+                <button onclick="addToCart('Cropped camisa ', 50.00)">Adicionar ao Carrinho</button>
+              </div>
+              
+              <div class="product">
+                <img src="./imagens/Croppedcamisa.jpg" alt="Croppedcamisa">
+                <h3> Shorts de linho (somente shorts ) </h3>
+                <p>R$89,99</p>
+                <button onclick="addToCart('Shorts de linho', 89.99)">Adicionar ao Carrinho</button>
+              </div>
+
+             
+
+
+      </div>
+      
+      <div id="calcados" class="tabcontent">
+        <!-- Conteúdo da aba de calçados -->
+        <!-- Aqui você colocaria os produtos de calçados -->
+      </div>
+    </div>
+
+      <div id="acessorios" class="tabcontent">
+        <div class="product">
+          <img src="./imagens/Croppedcamisa.jpg" alt="Crochebols">
+          <h3> Bolsa crochê (somente bolsa ) </h3>
+          <p>R$100,00</p>
+          <button onclick="addToCart('Bolsa crochê', 100.00)">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCartModal()">&times;</span>
+      <h2>Seu Carrinho</h2>
+      <div class="cart-items">
+        <!-- Aqui serão exibidos os itens do carrinho -->
+      </div>
+      <p id="totalAmount">Total: R$ 0.00</p>
+      <button class="checkout-btn" onclick="openCheckoutForm()">Finalizar Compra</button>
+    </div>
+  </div>
+  
+  <div id="checkoutForm" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCheckoutForm()">&times;</span>
+      <h2>Finalizar Compra</h2>
+     
+      <form id="purchaseForm" onsubmit="submitPurchase(event)">
+        <input type="text" id="name" name="name" placeholder="Nome">
+        <input type="email" id="email" name="email" placeholder="E-mail">
+        <input type="text" id="numero" name="numero" placeholder="Número de telefone completo">
+        <input type="text" id="rua" name="rua" placeholder="Nome da rua">
+        <input type="text" id="cep" name="cep" placeholder="CEP">
+        <!-- Outros campos necessários -->
+      
+        <button type="submit">Enviar Pedido</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section about">
+          <h2>Sobre Nós</h2>
+          <p> Somos uma loja focada na parte de roupas de ginastica e academia feminina estamos localizada em porto portugal  </p>
+        </div>
+        <div>
+          <h2>Fazer login </h2>
+          <button onclick="openLoginModal()">Fazer Login</button>
+        </div>
+        <div class="footer-section contact">
+          <h2>Entre em Contato</h2>
+          <p>Email: exemplo@dominio.com</p>
+          <p>Telefone: (123) 456-7890</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>Fazer Login</h2>
+      <form id="loginForm" onsubmit="login(event)">
+        <input type="text" id="username" name="username" placeholder="Usuário">
+        <input type="password" id="password" name="password" placeholder="Senha">
+        <button type="submit">Entrar</button>
+</div>
+
+  <script>
+    let cartItems = []; // Array para armazenar os itens no carrinho
+
+    function addToCart(productName, productPrice) {
+      cartItems.push({ name: productName, price: productPrice });
+      updateCartCount();
+      displayCartItems();
+    }
+
+    function removeCartItem(button) {
+      const itemDiv = button.parentElement;
+      const index = Array.from(itemDiv.parentElement.children).indexOf(itemDiv);
+      cartItems.splice(index, 1);
+      updateCartCount();
+      displayCartItems();
+    }
+
+    function updateCartCount() {
+      const cartCount = document.querySelector('.cart-count');
+      cartCount.textContent = cartItems.length;
+    }
+
+    function openTab(tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      event.currentTarget.className += " active";
+    }
+
+    function openCartModal() {
+      document.getElementById('cartModal').style.display = 'block';
+      displayCartItems(); // Chama a função para exibir os itens no carrinho
+    }
+
+    function closeCartModal() {
+      document.getElementById('cartModal').style.display = 'none';
+    }
+
+    function displayCartItems() {
+      const cartItemsDiv = document.querySelector('.cart-items');
+      const totalAmountDiv = document.getElementById('totalAmount');
+      cartItemsDiv.innerHTML = ''; // Limpa o conteúdo atual do carrinho
+      let totalAmount = 0;
+
+      if (cartItems.length === 0) {
+        cartItemsDiv.innerHTML = '<p>Carrinho vazio</p>';
+      } else {
+        cartItems.forEach((item, index) => {
+          const itemDiv = document.createElement('div');
+          itemDiv.classList.add('cart-item');
+          itemDiv.textContent = `${item.name} - R$ ${item.price.toFixed(2)}`;
+          
+          const removeButton = document.createElement('button');
+          removeButton.textContent = 'Remover';
+          removeButton.onclick = function() {
+            removeCartItem(this);
+          };
+          itemDiv.appendChild(removeButton);
+          
+          cartItemsDiv.appendChild(itemDiv); 
+
+           totalAmount += item.price; // Somando os preços dos itens
+      });
+    }
+
+    totalAmountDiv.textContent = `Total: R$ ${totalAmount.toFixed(2)}`;
+  }
+
+  function openCheckoutForm() {
+    document.getElementById('checkoutForm').style.display = 'block';
+  }
+
+  function closeCheckoutForm() {
+    document.getElementById('checkoutForm').style.display = 'none';
+  }
+
+  // Função para enviar os detalhes da compra
+  function submitPurchase(event) {
+    event.preventDefault(); // Impede o envio padrão do formulário
+
+    const formData = new FormData(document.getElementById('purchaseForm'));
+
+    // Use a função fetch() para enviar os dados para o servidor
+  fetch('/Formulario.php', {
+  method: 'POST',
+  body: formData
+})
+.then(response => {
+  if (response.ok) {
+    alert('Pedido enviado com sucesso! Aguarde respostas!');
+    closeCheckoutForm();
+  } else {
+    alert('Ocorreu um erro ao enviar o pedido.');
+  }
+})
+.catch(error => {
+  console.error('Erro ao enviar o pedido:', error);
+  alert('Ocorreu um erro ao enviar o pedido.');
+});
+  }
+  function openLoginModal() {
+      document.getElementById('loginModal').style.display = 'block';
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+
+    function login(event) {
+      event.preventDefault(); // Impede o envio padrão do formulário
+
+      const formData = new FormData(document.getElementById('loginForm'));
+      const username = formData.get('username');
+      const password = formData.get('password');
+
+      // Simula uma autenticação simples
+      if (username === 'admin' && password === 'admin') {
+        alert('Login bem sucedido!');
+        window.location.href = 'paginaadm.html'; // Redireciona para a página de administração
+      } else {
+        alert('Usuário ou senha inválidos. Tente novamente.');
+      }
+
+      closeLoginModal(); // Fecha o modal de login
+    }
+  </script>
+          
+        
+  </script>
+
+</body>
+</html>
